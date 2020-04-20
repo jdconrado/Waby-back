@@ -80,8 +80,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'waby',
-        'USER': 'root',
-        'PASSWORD': 'jd04230123',
+        'USER': 'WABY_BACK',
+        'PASSWORD': 'waby-back001',
         'HOST': 'localhost',
         'PORT': ''
     }
