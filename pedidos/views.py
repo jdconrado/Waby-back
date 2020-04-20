@@ -1,3 +1,88 @@
-from django.shortcuts import render
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from rest_framework.parsers import JSONParser
+from .models import Pedido
+from .serializers import PedidoSerializer
+import json
+from django.utils import timezone
 
 # Create your views here.
+@csrf_exempt
+@require_http_methods(['POST'])
+def crear_pedido(request):
+
+    body = JSONParser().parse(request)
+    i = PedidoSerializer(data={
+        "receta":body["receta"],
+        "especificaciones":body["especificaciones"],
+        "precioTotal":body["precioTotal"],
+        "estado":body["estado"],
+        "fecha_creado":timezone.now()
+    })
+    try:
+        if i.is_valid():
+            i.save()
+            return JsonResponse({
+                'status':'Succesful',
+                'result':'Orden creada.'
+            })
+        else:
+            return JsonResponse({
+            'status':'Error',
+            'result':'Los campos no son validos.',
+        })
+    except:
+        return JsonResponse({
+            'status':'Error',
+            'result':'Hubo un error al crear el ingrediente.'
+        })
+
+@csrf_exempt
+@require_http_methods(['GET'])
+def get_allIngredientes(request):
+    try:
+        ingredientes = Ingrediente.objects.all()
+        serializer = IngredienteSerializer(ingredientes, many=True)
+        return JsonResponse({
+            'status':'Succesful',
+            'result': serializer.data
+        })
+    except:
+        return JsonResponse({
+            'status':'Error',
+            'result':'Hubo un error al cargar los ingredientes.'
+        })
+
+@csrf_exempt
+@require_http_methods(['PUT'])
+def actualizar_ingrediente(request, pk):
+    try:
+        body = JSONParser().parse(request)
+        ingrediente = Ingrediente.objects.get(pk=pk)
+        serializer = IngredienteSerializer(ingrediente, data=body["data"] )
+        return JsonResponse({
+            'status':'Succesful',
+            'result': serializer.data
+        })
+    except:
+        return JsonResponse({
+            'status':'Error',
+            'result':'Hubo un error al actualizar el ingrediente.'
+        })
+
+@csrf_exempt
+@require_http_methods(['DELETE'])
+def eliminar_ingrediente(request, pk):
+    try:
+        ingrediente = Ingrediente.objects.get(pk=pk)
+        ingrediente.delete()
+        return JsonResponse({
+            'status':'Succesful',
+            'result': 'Ingrediente eliminado.'
+        })
+    except:
+        return JsonResponse({
+            'status':'Error',
+            'result':'Hubo un error al eliminar el ingrediente.'
+        })
