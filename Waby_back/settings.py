@@ -80,7 +80,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'waby',
-        'USER': 'WABY_BACK',
+        'USER': 'waby_back',
         'PASSWORD': 'waby-back001',
         'HOST': 'localhost',
         'PORT': ''
