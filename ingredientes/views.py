@@ -54,10 +54,17 @@ def actualizar_ingrediente(request, pk):
         body = JSONParser().parse(request)
         ingrediente = Ingrediente.objects.get(pk=pk)
         serializer = IngredienteSerializer(ingrediente, data=body["data"] )
-        return JsonResponse({
-            'status':'Succesful',
-            'result': serializer.data
-        })
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse({
+                'status':'Succesful',
+                'result': serializer.data
+            })
+        else:
+            return JsonResponse({
+            'status':'Error',
+            'result':'Hubo un error comprando con el modelo.'
+            })
     except:
         return JsonResponse({
             'status':'Error',
