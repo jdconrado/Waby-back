@@ -79,3 +79,20 @@ def eliminar_ingrediente(request, pk):
             'status':'Error',
             'result':'Hubo un error al eliminar el ingrediente.'
         })
+
+
+@csrf_exempt
+@require_http_methods(['GET'])
+def get_allListPedido(request, pedidoId):
+    try:
+        li = ListaIngredientes.objects.filter(pdeido=pedidoId)
+        serializer = ListaIgnSerializer(li, many=True)
+        return JsonResponse({
+                'status':'Succesful',
+                'result': serializer.data
+            })
+    except:
+        return JsonResponse({
+                'status':'Error',
+                'result':'Error al extraer la lista de ingredientes.'
+            })
