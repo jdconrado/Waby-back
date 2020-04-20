@@ -12,7 +12,7 @@ from django.utils import timezone
 @require_http_methods(['POST'])
 def crear_usuario(request):
 
-    body = JSONParser().parse(request)
+    body = JSONParser().parse(request)["data"]
     i = UsuarioSerializer(data={
         "nombre":body["nombre"],
         "apellido":body["apellido"],
@@ -35,4 +35,44 @@ def crear_usuario(request):
         return JsonResponse({
             'status':'Error',
             'result':'Hubo un error al crear el usuario.'
+        })
+
+@csrf_exempt
+@require_http_methods(['GET'])
+def get_allIngredientes(request):
+    try:
+        usuarios = Usuario.objects.all()
+        serializer = UsuarioSerializer(usuarios, many=True)
+        return JsonResponse({
+            'status':'Succesful',
+            'result': serializer.data
+        })
+    except:
+        return JsonResponse({
+            'status':'Error',
+            'result':'Hubo un error al cargar los ingredientes.'
+        })
+        
+@csrf_exempt
+@require_http_methods(['PUT'])
+def actualizar_ingrediente(request, pk):
+    try:
+        body = JSONParser().parse(request)
+        usuario = Usuario.objects.get(pk=pk)
+        serializer = UsuarioSerializer(usuario, data=body["data"] )
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse({
+                'status':'Succesful',
+                'result': serializer.data
+            })
+        else:
+            return JsonResponse({
+            'status':'Error',
+            'result':'Hubo un error comprando con el modelo.'
+            })
+    except:
+        return JsonResponse({
+            'status':'Error',
+            'result':'Hubo un error al actualizar el ingrediente.'
         })
