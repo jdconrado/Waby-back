@@ -34,6 +34,7 @@ CORS_ORIGIN_ALLOW_ALL=True
 INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
+    'usuarios.apps.UsuariosConfig',
     'ingredientes.apps.IngredientesConfig',
     'pedidos.apps.PedidosConfig',
     'django.contrib.admin',
@@ -42,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'usuarios.apps.UsuariosConfig',
 ]
 
 MIDDLEWARE = [

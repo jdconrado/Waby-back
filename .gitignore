@@ -3,5 +3,5 @@
 # dependencies
 pycache/
 *.py[cdo]
-.vscode/
-//migrations/
+*/.vscode/
+**/**/migrations/

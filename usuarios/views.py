@@ -50,7 +50,7 @@ def get_allIngredientes(request):
     except:
         return JsonResponse({
             'status':'Error',
-            'result':'Hubo un error al cargar los ingredientes.'
+            'result':'Hubo un error al cargar el usuario.'
         })
         
 @csrf_exempt
@@ -74,5 +74,5 @@ def actualizar_ingrediente(request, pk):
     except:
         return JsonResponse({
             'status':'Error',
-            'result':'Hubo un error al actualizar el ingrediente.'
+            'result':'Hubo un error al actualizar el usuario.'
         })
