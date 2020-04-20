@@ -86,8 +86,8 @@ DATABASES = {
         'NAME': 'waby',
         'USER': 'waby_back',
         'PASSWORD': 'waby-back001',
-        'HOST': 'postgresql',
-        'PORT': '5432'
+        'HOST': 'localhost',
+        'PORT': ''
     }
 }
 
