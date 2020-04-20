@@ -78,10 +78,10 @@ WSGI_APPLICATION = 'Waby_back.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'waby',
-        'USER': 'root',
-        'PASSWORD': 'jd04230123',
+        'USER': 'waby_back',
+        'PASSWORD': 'waby-back001',
         'HOST': 'localhost',
         'PORT': ''
     }
