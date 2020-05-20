@@ -86,8 +86,8 @@ DATABASES = {
         'NAME': 'waby',
         'USER': 'waby_back',
         'PASSWORD': 'waby-back001',
-        'HOST': 'localhost',
-        'PORT': ''
+        'HOST': 'ec2-52-55-17-28.compute-1.amazonaws.com',
+        'PORT': '5432'
     }
 }
 
