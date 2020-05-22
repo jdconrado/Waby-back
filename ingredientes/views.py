@@ -103,3 +103,19 @@ def get_allListPedido(request, pedidoId):
                 'status':'Error',
                 'result':'Error al extraer la lista de ingredientes.'
             })
+
+@csrf_exempt
+@require_http_methods(['GET'])
+def getIng(request,pk):
+    try:
+        ing = Ingrediente.objects.get(pk=pk)
+        serializer=IngredienteSerializer(ing)
+        return JsonResponse({
+            'status': 'Succesful',
+            'result': serializer.data
+        })
+    except:
+        return JsonResponse({
+            'status': 'Error',
+            'result': None
+        })

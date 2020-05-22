@@ -9,16 +9,18 @@ from django.utils import timezone
 from ingredientes.serializers import ListaIgnSerializer
 
 # Create your views here.
+
+
 @csrf_exempt
 @require_http_methods(['POST'])
 def crear_pedido(request):
 
     body = JSONParser().parse(request)["data"]
     i = PedidoSerializer(data={
-        "especificaciones":body["especificaciones"],
-        "precioTotal":body["precioTotal"],
-        "estado":body["estado"],
-        "fecha_creado":timezone.now()
+        "especificaciones": body["especificaciones"],
+        "precioTotal": body["precioTotal"],
+        "estado": body["estado"],
+        "fecha_creado": timezone.now()
     })
     try:
         if i.is_valid():
@@ -34,26 +36,43 @@ def crear_pedido(request):
                         li.save()
                     else:
                         return JsonResponse({
-                            'status':'No es valido',
+                            'status': 'No es valido',
                             'valid': li.is_valid(),
                             'result': i.data
                         })
                 except:
                     return JsonResponse({
-                        'status':'Error',
+                        'status': 'Error',
                         'result': 'Error al encontrar el ingrediente',
                     })
             return JsonResponse({
-                'status':'Succesful',
-                'result':'Orden creada.'
+                'status': 'Succesful',
+                'result': 'Orden creada.'
             })
         else:
             return JsonResponse({
-            'status':'Error',
-            'result':'Los campos no son validos.',
+                'status': 'Error',
+                'result': 'Los campos no son validos.',
             })
     except:
         return JsonResponse({
-            'status':'Error',
-            'result':'Hubo un error al crear el pedido.'
+            'status': 'Error',
+            'result': 'Hubo un error al crear el pedido.'
+        })
+
+
+@csrf_exempt
+@require_http_methods(['GET'])
+def get_pedidos(request):
+    try:
+        pedidos = Pedido.objects.all()
+        serializer = PedidoSerializer(pedidos, many=True)
+        return JsonResponse({
+            'status': 'Succesful',
+            'result': serializer.data
+        })
+    except:
+        return JsonResponse({
+            'status': 'Error',
+            'result': 'Error al extraer la lista de pedidos.'
         })
