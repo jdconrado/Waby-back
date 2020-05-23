@@ -92,7 +92,7 @@ def eliminar_ingrediente(request, pk):
 @require_http_methods(['GET'])
 def get_allListPedido(request, pedidoId):
     try:
-        li = ListaIngredientes.objects.filter(pdeido=pedidoId)
+        li = ListaIngredientes.objects.filter(pedidoId=pedidoId)
         serializer = ListaIgnSerializer(li, many=True)
         return JsonResponse({
                 'status':'Succesful',

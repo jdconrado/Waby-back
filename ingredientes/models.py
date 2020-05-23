@@ -15,5 +15,5 @@ class Ingrediente(models.Model):
 class ListaIngredientes(models.Model):
     ingred = models.IntegerField(null=False)
     cantidad = models.IntegerField(default=1)
-    pdeido = models.IntegerField(null=False)
+    pedidoId = models.IntegerField(null=False)
 
