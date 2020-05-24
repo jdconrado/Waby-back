@@ -84,7 +84,7 @@ def get_pedidos(request):
 @require_http_methods(['GET'])
 def get_userPedidos(request, id2):
     try:
-        pedidos = Pedido.objects.filter(userId=id2)
+        pedidos = Pedido.objects.filter(userId_id=id2)
         serializer = PedidoSerializer(pedidos, many=True)
         return JsonResponse({
             'status': 'Succesful',
