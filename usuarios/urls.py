@@ -6,4 +6,5 @@ urlpatterns = [
     path('login', views.log, name='log'),
     path('logout/<tk>', views.logoutv, name='logoutv'),
     path('getid/<token>', views.getid, name='getid'),
+    path('getUser/<idC>', views.getUser, name='getUser'),
 ]
