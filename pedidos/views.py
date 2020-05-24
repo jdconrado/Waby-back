@@ -6,7 +6,8 @@ from .models import Pedido
 from .serializers import PedidoSerializer
 import json
 from django.utils import timezone
-from ingredientes.serializers import ListaIgnSerializer
+from ingredientes.serializers import ListaIgnSerializer, IngredienteSerializer
+from ingredientes.models import Ingrediente
 
 # Create your views here.
 
@@ -26,10 +27,12 @@ def crear_pedido(request):
         if i.is_valid():
             i.save()
             for relIgn in body["receta"]:
+                ingo = Ingrediente.objects.get(pk=relIgn["ingId"])
+                ingo = IngredienteSerializer(ingo)
                 try:
                     li = ListaIgnSerializer(data={
-                        "pdeido": i.data["id"],
-                        "ingred": relIgn["ingId"],
+                        "pdeido": i,
+                        "ingred": ingo,
                         "cantidad": relIgn["cantidad"]
                     })
                     if li.is_valid():
