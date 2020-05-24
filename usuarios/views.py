@@ -28,13 +28,14 @@ def crear_usuario(request):
         user.name = body["name"]
         user.lastname = body["lastname"]
         user.save()
-        Token.objects.get_or_create(user=user)
+        token = Token.objects.get_or_create(user=user)[0]
         js = str(token)
         return JsonResponse({
             'status': 'Success',
             'result': js
         })
-    except:
+    except Exception as e:
+        print(e)
         return JsonResponse({
             'status': 'Error',
             'result': 'Hubo un error al crear el usuario.'
@@ -100,4 +101,23 @@ def log(request):
         return JsonResponse({
             'status': 'Error',
             'result': 'Hubo un error al logear el usuario.'
+        })
+
+@csrf_exempt
+@require_http_methods(['GET'])
+def getUser(request,idC):
+    try:
+        id=Usuarios.objects.get(id=idC)
+        name=str(id.name)
+        lastname=str(id.lastname)
+        email=str(id.email)
+        return JsonResponse({
+            'status': 'Success',
+            'result': {'name': name, 'lastname': lastname, 'email': email}
+        })
+    except Exception as e:
+        print(e)
+        return JsonResponse({
+            'status': 'Error',
+            'result': 'Something went wrong'
         })

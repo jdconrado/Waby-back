@@ -21,6 +21,7 @@ def crear_pedido(request):
         "especificaciones": body["especificaciones"],
         "precioTotal": body["precioTotal"],
         "estado": body["estado"],
+        "userId": body["userId"],
         "fecha_creado": timezone.now()
     })
     try:
@@ -75,6 +76,24 @@ def get_pedidos(request):
             'result': serializer.data
         })
     except:
+        return JsonResponse({
+            'status': 'Error',
+            'result': 'Error al extraer la lista de pedidos.'
+        })
+
+
+@csrf_exempt
+@require_http_methods(['GET'])
+def get_userPedidos(request, id2):
+    try:
+        pedidos = Pedido.objects.filter(userId=id2)
+        serializer = PedidoSerializer(pedidos, many=True)
+        return JsonResponse({
+            'status': 'Succesful',
+            'result': serializer.data
+        })
+    except Exception as e:
+        print(e)
         return JsonResponse({
             'status': 'Error',
             'result': 'Error al extraer la lista de pedidos.'
