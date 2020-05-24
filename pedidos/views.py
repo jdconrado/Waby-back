@@ -30,7 +30,7 @@ def crear_pedido(request):
             for relIgn in body["receta"]:
                 try:
                     li = ListaIgnSerializer(data={
-                        "pdeido": i.data["id"],
+                        "pedidoId": i.data["id"],
                         "ingred": relIgn["ingId"],
                         "cantidad": relIgn["cantidad"]
                     })

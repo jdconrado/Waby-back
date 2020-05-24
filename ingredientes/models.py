@@ -13,7 +13,7 @@ class Ingrediente(models.Model):
         return self.nombre_ing
 
 class ListaIngredientes(models.Model):
-    ingred = models.FloatField(null=False)
+    ingred = models.ForeignKey(Ingrediente,on_delete=models.CASCADE)
     cantidad = models.IntegerField(default=1)
-    pedidoId = models.FloatField(null=False)
+    pedidoId = models.ForeignKey(Pedido,on_delete=models.CASCADE)
 
