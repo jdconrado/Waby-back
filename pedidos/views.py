@@ -28,12 +28,10 @@ def crear_pedido(request):
         if i.is_valid():
             i.save()
             for relIgn in body["receta"]:
-                ingo = Ingrediente.objects.get(pk=relIgn["ingId"])
-                ingo = IngredienteSerializer(ingo)
                 try:
                     li = ListaIgnSerializer(data={
-                        "pdeido": i,
-                        "ingred": ingo,
+                        "pdeido": i.data["id"],
+                        "ingred": relIgn["ingId"],
                         "cantidad": relIgn["cantidad"]
                     })
                     if li.is_valid():
