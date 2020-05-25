@@ -17,14 +17,12 @@ from django.utils import timezone
 @require_http_methods(['POST'])
 def crear_usuario(request):
     body = JSONParser().parse(request)["data"]
-    # i = UsuarioSerializer(data={
-    #     "nombre":body["nombre"],
-    #     "apellido":body["apellido"],
-    #     "email":body["email"],
-    #     "password":body["password"]
-    # })
     try:
-        user = Usuarios.objects.create_user(body["email"], body["password"])
+        print(body["tipo"])
+        if body["tipo"]:
+            user = Usuarios.objects.create_admin(body["email"], body["password"])
+        else:
+            user = Usuarios.objects.create_user(body["email"], body["password"])
         user.name = body["name"]
         user.lastname = body["lastname"]
         user.save()
