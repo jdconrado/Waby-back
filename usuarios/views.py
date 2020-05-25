@@ -20,32 +20,72 @@ def crear_usuario(request):
     try:
         print(body["tipo"])
         if body["tipo"]:
-            user = Usuarios.objects.create_admin(body["email"], body["password"])
+            user = Usuarios.objects.create_admin(
+                body["email"], body["password"])
         else:
-            user = Usuarios.objects.create_user(body["email"], body["password"])
-        user.name = body["name"]
-        user.lastname = body["lastname"]
-        user.save()
-        token = Token.objects.get_or_create(user=user)[0]
-        js = str(token)
-        return JsonResponse({
-            'status': 'Success',
-            'result': js
-        })
+            user = Usuarios.objects.create_user(
+                body["email"], body["password"])
+        if user is not None:
+            user.name = body["name"]
+            user.lastname = body["lastname"]
+            user.save()
+            token = Token.objects.get_or_create(user=user)[0]
+            js = str(token)
+            return JsonResponse({
+                'status': 'Success',
+                'result': js
+            })
+        else:
+            return JsonResponse({
+                'status': 'Error',
+                'result': 'Something went wrong'
+            })
     except Exception as e:
         print(e)
+        error = str(e)
         return JsonResponse({
             'status': 'Error',
-            'result': 'Hubo un error al crear el usuario.'
+            'result': 'Hubo un error al crear el usuario.',
+            'details': error
         })
 
 
 @csrf_exempt
 @require_http_methods(['POST'])
-def getid(request,token):
+def updateUser(request, idU):
     try:
-        id=Token.objects.get(key=token)
-        userid=id.user_id
+        body = JSONParser().parse(request)["data"]
+        user = Usuarios.objects.get(id=idU)
+        if body["email"] != user.email:
+            check = Usuarios.objects.filter(email=body["email"]).exists()
+            if check:
+                return JsonResponse({
+                    'status': 'Error',
+                    'result': 'Ya existe el email'
+                })
+            else:
+                user.email = body["email"]
+        user.name = body["name"]
+        user.lastname = body["lastname"]
+        user.save()
+        return JsonResponse({
+            'status': 'Success',
+            'result': 'Se ha actualizado correctamente.'
+        })
+    except Exception as E:
+        print(E)
+        return JsonResponse({
+            'status': 'Error',
+            'result': 'Hubo un error al actualizar el usuario.'
+        })
+
+
+@csrf_exempt
+@require_http_methods(['POST'])
+def getid(request, token):
+    try:
+        id = Token.objects.get(key=token)
+        userid = id.user_id
         return JsonResponse({
             'status': 'Success',
             'result': userid
@@ -59,10 +99,10 @@ def getid(request,token):
 
 @csrf_exempt
 @require_http_methods(['POST'])
-def logoutv(request,tk):
+def logoutv(request, tk):
     try:
         logout(request)
-        token=Token.objects.get(key=tk)
+        token = Token.objects.get(key=tk)
         token.delete()
         return JsonResponse({
             'status': 'Success',
@@ -92,7 +132,7 @@ def log(request):
         else:
             return JsonResponse({
                 'status': 'Error',
-                'result': 'Doesnt exist.'
+                'result': 'Hubo un error al encontrar el usuario.'
             })
     except Exception as e:
         print(e)
@@ -101,14 +141,15 @@ def log(request):
             'result': 'Hubo un error al logear el usuario.'
         })
 
+
 @csrf_exempt
 @require_http_methods(['GET'])
-def getUser(request,idC):
+def getUser(request, idC):
     try:
-        id=Usuarios.objects.get(id=idC)
-        name=str(id.name)
-        lastname=str(id.lastname)
-        email=str(id.email)
+        id = Usuarios.objects.get(id=idC)
+        name = str(id.name)
+        lastname = str(id.lastname)
+        email = str(id.email)
         return JsonResponse({
             'status': 'Success',
             'result': {'name': name, 'lastname': lastname, 'email': email}

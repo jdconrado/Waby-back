@@ -7,4 +7,5 @@ urlpatterns = [
     path('logout/<tk>', views.logoutv, name='logoutv'),
     path('getid/<token>', views.getid, name='getid'),
     path('getUser/<idC>', views.getUser, name='getUser'),
+    path('update/<idU>', views.updateUser, name='updateUser')
 ]
