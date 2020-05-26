@@ -132,7 +132,7 @@ def log(request):
         else:
             return JsonResponse({
                 'status': 'Error',
-                'result': 'Hubo un error al encontrar el usuario.'
+                'result': 'Verifica los datos.'
             })
     except Exception as e:
         print(e)
@@ -150,9 +150,10 @@ def getUser(request, idC):
         name = str(id.name)
         lastname = str(id.lastname)
         email = str(id.email)
+        staff = str(id.is_staff)
         return JsonResponse({
             'status': 'Success',
-            'result': {'name': name, 'lastname': lastname, 'email': email}
+            'result': {'name': name, 'lastname': lastname, 'email': email, 'staff': staff}
         })
     except Exception as e:
         print(e)
