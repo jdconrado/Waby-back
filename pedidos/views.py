@@ -64,6 +64,25 @@ def crear_pedido(request):
 
 
 @csrf_exempt
+@require_http_methods(['POST'])
+def updatePedido(request, idP):
+    try:
+        body = JSONParser().parse(request)
+        pedido=Pedido.objects.get(id=idP)
+        pedido.estado=body["estado"]
+        pedido.save()
+        return JsonResponse({
+            'status':'Success',
+            'result':'Se ha actualizado el pedido correctamente.'
+        })
+    except Exception as e:
+        print(e)
+        return JsonResponse({
+            'status':'Error',
+            'result':'There was an error'
+        })
+
+@csrf_exempt
 @require_http_methods(['GET'])
 def get_pedidos(request):
     try:
