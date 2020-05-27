@@ -86,9 +86,12 @@ def getid(request, token):
     try:
         id = Token.objects.get(key=token)
         userid = id.user_id
+        user=Usuarios.objects.get(id=userid)
+        istaff=user.is_staff
         return JsonResponse({
             'status': 'Success',
-            'result': userid
+            'result': userid,
+            'admin':istaff
         })
     except:
         return JsonResponse({
